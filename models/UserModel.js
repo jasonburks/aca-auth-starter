@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true
@@ -13,4 +13,12 @@ const UserSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('User', userSchema)
+// Remove the hashed password form the JSON response
+userSchema.set('toJSON', {
+  transform: function(doc, ret, options) {
+    delete ret.password;
+    return ret;
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);

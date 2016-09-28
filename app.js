@@ -8,11 +8,32 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const users = require('./routes/users');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('./config/passport');
+
+const middleware = require('./routes/middleware');
+
+const flash = require('express-flash');
+
+
 // Set up mongoose
 const mongoose = require('mongoose');
 // You need to connect to your MongoDB here
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/user-auth');
 
 const app = express();
+
+app.use(flash());
+
+app.use(session({
+  secret: 'foo',
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

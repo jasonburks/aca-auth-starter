@@ -7,6 +7,7 @@ const app = document.querySelector('#app');
 
 // Set greeting
 const greeting = document.createElement('h2');
-greeting.innerText = 'Express Backbone Starter App!';
+var username = $('[data-bootstrap]').data('bootstrap');
+greeting.innerText = 'Hello ' + username + '! Express Backbone Starter App!';
 
 app.appendChild(greeting);
